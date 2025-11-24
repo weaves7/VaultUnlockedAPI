@@ -18,6 +18,8 @@ package net.milkbowl.vault2.helper;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 /**
  * Represents a context within which certain operations or data are scoped.
  * A context can optionally be tied to a specific world.
@@ -38,8 +40,7 @@ public class Context {
     this.world = world;
   }
 
-  @Nullable
-  public String world() {
-    return world;
+  public Optional<String> world() {
+    return Optional.ofNullable(world);
   }
 }

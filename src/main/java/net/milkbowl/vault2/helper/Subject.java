@@ -19,6 +19,7 @@ package net.milkbowl.vault2.helper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -50,8 +51,8 @@ public class Subject {
   }
 
   @Nullable
-  public String name() {
-    return name;
+  public Optional<String> name() {
+    return Optional.ofNullable(name);
   }
 
   public boolean isPlayer() {
