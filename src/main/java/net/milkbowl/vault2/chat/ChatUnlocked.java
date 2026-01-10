@@ -98,49 +98,43 @@ public interface ChatUnlocked {
   boolean setSuffix(@NotNull Context context, @NotNull Subject subject, @NotNull String suffix);
 
   /**
-   * Retrieves the prefix for a specified group within a given context for the specified subject.
+   * Retrieves the prefix for a specified group within a given context.
    *
    * @param context the context in which the group-based prefix is being retrieved; must not be null
-   * @param subject the subject for which the group-based prefix is being retrieved; must not be null
    * @param group   the group from which the prefix is being retrieved; must not be null
    * @return an optional containing the prefix if it exists, or an empty optional if no prefix is set for the group
    */
-  Optional<String> getGroupPrefix(@NotNull Context context, @NotNull Subject subject, @NotNull String group);
+  Optional<String> getGroupPrefix(@NotNull Context context, @NotNull String group);
 
   /**
-   * Retrieves the suffix for a specified group within a given context for the specified subject.
+   * Retrieves the suffix for a specified group within a given context.
    *
    * @param context the context in which the group-based suffix is being retrieved; must not be null
-   * @param subject the subject for which the group-based suffix is being retrieved; must not be null
    * @param group   the group from which the suffix is being retrieved; must not be null
    * @return an optional containing the suffix if it exists, or an empty optional if no suffix is set for the group
    * @since 2.18
    */
-  Optional<String> getGroupSuffix(@NotNull Context context, @NotNull Subject subject, @NotNull String group);
+  Optional<String> getGroupSuffix(@NotNull Context context, @NotNull String group);
 
   /**
-   * Sets the prefix for a specific group within a given context for the specified subject.
+   * Sets the prefix for a specific group within a given context.
    *
    * @param context the context in which the group-based prefix is being set; must not be null
-   * @param subject the subject for which the group-based prefix is being updated; must not be null
    * @param group   the group to which the prefix applies; must not be null
    * @param prefix  the new prefix to be assigned to the group; must not be null
    * @return true if the prefix was successfully set for the group, false otherwise
    * @since 2.18
    */
-  boolean setGroupPrefix(@NotNull Context context, @NotNull Subject subject, @NotNull String group,
-                         @NotNull String prefix);
+  boolean setGroupPrefix(@NotNull Context context,  @NotNull String group, @NotNull String prefix);
 
   /**
-   * Sets the suffix for a specific group within a given context for the specified subject.
+   * Sets the suffix for a specific group within a given context.
    *
    * @param context the context in which the group-based suffix is being set; must not be null
-   * @param subject the subject for which the group-based suffix is being updated; must not be null
    * @param group   the group to which the suffix applies; must not be null
    * @param suffix  the new suffix to be assigned to the group; must not be null
    * @return true if the suffix was successfully set for the group, false otherwise
    * @since 2.18
    */
-  boolean setGroupSuffix(@NotNull Context context, @NotNull Subject subject, @NotNull String group,
-                         @NotNull String suffix);
+  boolean setGroupSuffix(@NotNull Context context, @NotNull String group, @NotNull String suffix);
 }

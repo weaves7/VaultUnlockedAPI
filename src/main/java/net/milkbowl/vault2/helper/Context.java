@@ -21,12 +21,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 /**
- * Represents a context within which certain operations or data are scoped.
- * A context can optionally be tied to a specific world.
+ * Represents an operational context that can optionally be associated with a specific world.
+ * The context determines the scope in which certain operations or checks, such as permissions, are applied.
  *
- * This class provides functionality to retrieve the name of the world associated
- * with this context, or operate within a global, world-less context if no specific
- * world is supplied.
+ * A global context is represented by the {@code GLOBAL} constant, which is not tied to any specific world.
+ *
+ * This class provides methods for retrieving the name of the world associated with the context,
+ * if any, and is used to manage scoped operations.
  * @author creatorfromhell
  * @since 2.18
  */
@@ -36,6 +37,11 @@ public class Context {
 
   private String world;
 
+  /**
+   * Constructs a new Context object, optionally associated with a specific world.
+   *
+   * @param world the name of the world to associate with this context, or null for a global context
+   */
   public Context(@Nullable final String world) {
     this.world = world;
   }

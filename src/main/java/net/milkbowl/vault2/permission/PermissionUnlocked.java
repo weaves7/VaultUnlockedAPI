@@ -215,6 +215,17 @@ public interface PermissionUnlocked {
   boolean inGroup(@NotNull Context context, @NotNull Subject subject);
 
   /**
+   * Determines whether the specified subject belongs to the given group within the provided context.
+   *
+   * @param context the context in which the group membership is being checked, must not be null
+   * @param subject the subject whose membership is being verified, must not be null
+   * @param group the name of the group to check for membership, must not be null
+   * @return true if the subject belongs to the specified group in the given context, false otherwise
+   * @since 2.18
+   */
+  boolean inGroup(@NotNull Context context, @NotNull Subject subject, @NotNull String group);
+
+  /**
    * Asynchronously checks if the specified subject is part of a group in the given context.
    *
    * @param context the context in which the group check is performed; must not be null.
@@ -224,6 +235,18 @@ public interface PermissionUnlocked {
    */
   @NotNull
   CompletableFuture<Boolean> inGroupAsync(@NotNull Context context, @NotNull Subject subject);
+
+  /**
+   * Asynchronously checks if the given subject is part of the specified group within the provided context.
+   *
+   * @param context the context in which the group membership should be checked, must not be null
+   * @param subject the subject whose group membership is to be verified, must not be null
+   * @param group the name of the group to check membership against, must not be null
+   * @return a CompletableFuture that will complete with a Boolean indicating whether the subject is in the group
+   * @since 2.18
+   */
+  @NotNull
+  CompletableFuture<Boolean> inGroupAsync(@NotNull Context context, @NotNull Subject subject, @NotNull String group);
 
   /**
    * Assigns the specified subject to a given group within the provided context.
@@ -274,10 +297,9 @@ public interface PermissionUnlocked {
                                               @NotNull String group);
 
   /**
-   * Checks whether the specified group has the given permission for a subject within the context.
+   * Checks whether the specified group has the given permission within the context.
    *
    * @param context the context in which the group permission is being checked; cannot be null
-   * @param subject the subject for whom the group permission is being checked; cannot be null
    * @param group the name of the group whose permission is being checked; cannot be null
    * @param permission the specific permission identifier to be checked; cannot be null
    * @return a {@link TriState} value indicating the state of the permission for the group,
@@ -285,14 +307,12 @@ public interface PermissionUnlocked {
    * @since 2.18
    */
   @NotNull
-  TriState groupHas(@NotNull Context context, @NotNull Subject subject, @NotNull String group,
-                    @NotNull String permission);
+  TriState groupHas(@NotNull Context context, @NotNull String group, @NotNull String permission);
 
   /**
-   * Checks if a specific group has a given permission for a subject within a provided context.
+   * Checks if a specific group has a given permission within a provided context.
    *
    * @param context the context in which the check is performed; must not be null
-   * @param subject the subject for which the group's permission is being checked; must not be null
    * @param group the name of the group being checked; must not be null
    * @param permission the permission being checked for the group; must not be null
    * @return a CompletableFuture that resolves to a TriState, indicating whether the group has the
@@ -300,29 +320,27 @@ public interface PermissionUnlocked {
    * @since 2.18
    */
   @NotNull
-  CompletableFuture<TriState> groupHasAsync(@NotNull Context context, @NotNull Subject subject,
-                                            @NotNull String group, @NotNull String permission);
+  CompletableFuture<TriState> groupHasAsync(@NotNull Context context, @NotNull String group,
+                                            @NotNull String permission);
 
   /**
-   * Sets the specified permission for a subject in a given group within a specified context to a desired state.
+   * Sets the specified permission in a given group within a specified context to a desired state.
    *
    * @param context the context in which the group permission is being set; cannot be null
-   * @param subject the subject for whom the group permission is being set; cannot be null
    * @param group the name of the group for which the permission is assigned; cannot be null
    * @param permission the identifier of the permission to modify; cannot be null
    * @param value the {@link TriState} value indicating the desired state of the permission; cannot be null
    * @return true if the permission was successfully set for the group, false otherwise
    * @since 2.18
    */
-  boolean groupSetPermission(@NotNull Context context, @NotNull Subject subject, @NotNull String group,
+  boolean groupSetPermission(@NotNull Context context, @NotNull String group,
                              @NotNull String permission, @NotNull TriState value);
 
   /**
-   * Sets a specific permission for a group associated with a given subject in the provided context.
+   * Sets a specific permission for a group associated in the provided context.
    * The permission's state can be set to true, false, or undefined using the TriState value.
    *
    * @param context the context in which the group and subject operate, must not be null
-   * @param subject the subject for which the permission is being set, must not be null
    * @param group the name of the group for which the permission is being set, must not be null
    * @param permission the permission string to be set for the group, must not be null
    * @param value the TriState value representing the desired state of the permission (true, false, or undefined), must not be null
@@ -330,31 +348,29 @@ public interface PermissionUnlocked {
    * @since 2.18
    */
   @NotNull
-  CompletableFuture<Boolean> groupSetPermissionAsync(@NotNull Context context, @NotNull Subject subject,
+  CompletableFuture<Boolean> groupSetPermissionAsync(@NotNull Context context,
                                                 @NotNull String group, @NotNull String permission,
                                                 @NotNull TriState value);
 
   /**
-   * Sets a transient permission for a specific group within a given context and subject.
+   * Sets a transient permission for a specific group within a given context.
    * Transient permissions are temporary and do not persist beyond the current runtime.
    *
    * @param context the context in which the permission is being set; cannot be null
-   * @param subject the subject for whom the group permission is being set; cannot be null
    * @param group the name of the group for which the transient permission is assigned; cannot be null
    * @param permission the identifier of the permission to modify; cannot be null
    * @param value the {@link TriState} value indicating the desired state of the permission; cannot be null
    * @return true if the transient permission was successfully set for the group, false otherwise
    * @since 2.18
    */
-  boolean groupSetTransientPermission(@NotNull Context context, @NotNull Subject subject, @NotNull String group,
+  boolean groupSetTransientPermission(@NotNull Context context, @NotNull String group,
                                       @NotNull String permission, @NotNull TriState value);
 
   /**
-   * Sets a transient permission for a specific group within the given subject and context.
+   * Sets a transient permission for a specific group within the given context.
    * The permission will only exist for the duration of the running session and is not persisted.
    *
    * @param context the context in which the permission should be applied, must not be null
-   * @param subject the subject to which the permission is being applied, must not be null
    * @param group the name of the group the permission applies to, must not be null
    * @param permission the specific permission to be set, must not be null
    * @param value the value of the permission, represented by TriState, must not be null
@@ -362,7 +378,7 @@ public interface PermissionUnlocked {
    * @since 2.18
    */
   @NotNull
-  CompletableFuture<Boolean> groupSetTransientPermissionAsync(@NotNull Context context, @NotNull Subject subject,
+  CompletableFuture<Boolean> groupSetTransientPermissionAsync(@NotNull Context context,
                                                          @NotNull String group, @NotNull String permission,
                                                          @NotNull TriState value);
 }

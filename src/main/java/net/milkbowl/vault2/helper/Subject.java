@@ -38,6 +38,18 @@ public class Subject {
   private String name;
   private boolean player;
 
+  /**
+   * Constructs a new Subject with the specified identifier and name, defaulting
+   * the player flag to true.
+   *
+   * @param identifier the unique identifier for the subject
+   * @param name the name of the subject
+   */
+  public Subject(final UUID identifier, final String name) {
+
+    this(identifier, name, true);
+  }
+
   public Subject(final UUID identifier, final String name, final boolean player) {
 
     this.identifier = identifier;
