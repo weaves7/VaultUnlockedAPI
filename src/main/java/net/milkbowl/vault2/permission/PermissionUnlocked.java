@@ -16,15 +16,23 @@ package net.milkbowl.vault2.permission;
     along with Vault.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import net.milkbowl.vault2.helper.Context;
-import net.milkbowl.vault2.helper.Subject;
+import net.milkbowl.vault2.helper.context.Context;
+import net.milkbowl.vault2.helper.subject.Subject;
 import net.milkbowl.vault2.helper.TriState;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
 /**
- * PermissionsUnlocked
+ * Represents a permission provider to manage permissions, groups, and related operations
+ * within specific contexts and for specific subjects.
+ *
+ * This class offers methods to query, set, and retrieve permission states, either synchronously
+ * or asynchronously, including support for transient permissions and group-related operations.
+ *
+ * All operations assume that neither the context, subject, nor permission identifier are null.
+ * Operations may return default states (such as UNDEFINED) or empty values depending on
+ * context, group definitions, and permission configurations.
  *
  * @author creatorfromhell
  * @since 2.18
@@ -63,6 +71,31 @@ public interface PermissionUnlocked {
    * @since 2.18
    */
   boolean hasSuperPermsSupport();
+
+  /**
+   * Copies permissions from one subject to another.
+   *
+   * @param context the operational context in which the permissions are being copied; must not be null
+   * @param from the source subject from which permissions are copied; must not be null
+   * @param to the target subject to which permissions are copied; must not be null
+   * @param includeTransient if true, includes transient permissions in the copy; otherwise, only durable permissions are copied
+   * @return true if the permissions were successfully copied, false otherwise
+   * @since 2.18
+   */
+  boolean copyPermissions(@NotNull Context context, @NotNull Subject from, @NotNull Subject to, boolean includeTransient);
+
+  /**
+   * Asynchronously copies permissions from one subject to another.
+   *
+   * @param context the context in which the operation is performed; cannot be null
+   * @param from the source subject from which permissions will be copied; cannot be null
+   * @param to the target subject to which permissions will be copied; cannot be null
+   * @param includeTransient a flag indicating whether transient permissions should also be copied
+   * @return a CompletableFuture that resolves to true if the permissions were successfully copied,
+   *         or false if the operation failed
+   * @since 2.18
+   */
+  CompletableFuture<Boolean> copyPermissionsAsync(@NotNull Context context, @NotNull Subject from, @NotNull Subject to, boolean includeTransient);
 
   /**
    * Retrieves the permission state for a given context, subject, and permission identifier.
@@ -203,6 +236,28 @@ public interface PermissionUnlocked {
    */
   @NotNull
   CompletableFuture<String[]> getGroupsAsync(@NotNull Context context, @NotNull Subject subject);
+
+  /**
+   * Copies all groups from the source subject to the target subject.
+   *
+   * @param context the context in which the operation is performed, must not be null
+   * @param from the source subject from which the groups will be copied, must not be null
+   * @param to the target subject to which the groups will be copied, must not be null
+   * @return true if the groups were successfully copied, false otherwise
+   * @since 2.18
+   */
+  boolean copyGroups(@NotNull Context context, @NotNull Subject from, @NotNull Subject to);
+
+  /**
+   * Asynchronously copies groups from one subject to another subject within the given context.
+   *
+   * @param context the context in which the groups will be copied; must not be null
+   * @param from the source subject from which groups will be copied; must not be null
+   * @param to the target subject to which groups will be copied; must not be null
+   * @return a {@code CompletableFuture} that completes with {@code true} if the groups are copied successfully, or {@code false} otherwise
+   * @since 2.18
+   */
+  CompletableFuture<Boolean> copyGroupsAsync(@NotNull Context context, @NotNull Subject from, @NotNull Subject to);
 
   /**
    * Determines whether the specified subject is in a group within the given context.
