@@ -16,6 +16,7 @@ package net.milkbowl.vault2.helper;
     along with Vault.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,9 +35,9 @@ import java.util.UUID;
  */
 public class Subject {
 
-  private UUID identifier;
-  private String name;
-  private boolean player;
+  private final UUID identifier;
+  private final String name;
+  private final boolean player;
 
   /**
    * Constructs a new Subject with the specified identifier and name, defaulting
@@ -69,5 +70,9 @@ public class Subject {
 
   public boolean isPlayer() {
     return player;
+  }
+
+  public static Subject fromPlayer(final OfflinePlayer player) {
+    return new Subject(player.getUniqueId(), player.getName(), true);
   }
 }
