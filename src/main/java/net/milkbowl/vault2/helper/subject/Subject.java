@@ -16,8 +16,6 @@ package net.milkbowl.vault2.helper.subject;
     along with Vault.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.bukkit.OfflinePlayer;
-
 import java.util.UUID;
 
 /**
@@ -94,18 +92,5 @@ public class Subject {
    */
   public static Subject group(final String groupName) {
     return new Subject(groupName, groupName, SubjectType.GROUP);
-  }
-
-  /**
-   * Creates a {@code Subject} instance representing a player using the provided {@link OfflinePlayer}.
-   *
-   * This method generates a {@code Subject} by extracting the player's unique identifier (UUID)
-   * and name from the given {@link OfflinePlayer} instance.
-   *
-   * @param player the {@link OfflinePlayer} instance containing the player's details
-   * @return a {@code Subject} instance representing the specified player
-   */
-  public static Subject fromPlayer(final OfflinePlayer player) {
-    return player(player.getUniqueId(), player.getName());
   }
 }
