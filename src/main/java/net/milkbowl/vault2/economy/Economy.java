@@ -768,10 +768,11 @@ public interface Economy {
   EconomyResponse withdraw(@NotNull final String pluginName, @NotNull final UUID accountID, @NotNull final String worldName, @NotNull final String currency, @NotNull final BigDecimal amount);
 
   /**
-   * Checks if an account associated with a UUID can accept a deposit of the specified amount.
-   * This validates deposit feasibility, balance limits, and account status before actual deposit.
+   * Checks if an account associated with a UUID can receive a deposit of the specified amount.
+   * Checks performed are up to the implementation, but could include balance limits, account
+   * status, inventory space for item-based currencies, or other provider-specific validations.
    * <p>
-   * Note: Negative amounts should not be used. Use has methods instead.
+   * Note: Negative amounts should not be used.
    * <br>
    * Note: {@code pluginName} should be used for logging/diagnostics only and MUST NOT affect
    * business logic.
@@ -781,23 +782,24 @@ public interface Economy {
    * @param amount     Amount to check.
    *
    * @return {@link EconomyResponse} which includes the Economy plugin's {@link ResponseType}
-   * whether the account can accept the deposit. On success, amount is the checked amount and
-   * balance is the current balance.
+   * indicating whether the account can receive the deposit. On success, amount is the checked
+   * amount and balance is the current balance.
    *
    * @see #fractionalDigits(String)
    */
   @NotNull
-  default EconomyResponse canAccept(@NotNull final String pluginName, @NotNull final UUID accountID, @NotNull final BigDecimal amount) {
+  default EconomyResponse canDeposit(@NotNull final String pluginName, @NotNull final UUID accountID, @NotNull final BigDecimal amount) {
 
-    return new EconomyResponse(BigDecimal.ZERO, BigDecimal.ZERO, ResponseType.NOT_IMPLEMENTED, "canAccept is not implemented by this economy provider.");
+    return new EconomyResponse(BigDecimal.ZERO, BigDecimal.ZERO, ResponseType.NOT_IMPLEMENTED, "canDeposit is not implemented by this economy provider.");
   }
 
   /**
-   * Checks if an account associated with a UUID can accept a deposit of the specified amount
+   * Checks if an account associated with a UUID can receive a deposit of the specified amount
    * in a given world.
-   * This validates deposit feasibility, balance limits, and account status before actual deposit.
+   * Checks performed are up to the implementation, but could include balance limits, account
+   * status, inventory space for item-based currencies, or other provider-specific validations.
    * <p>
-   * Note: Negative amounts should not be used. Use has methods instead.
+   * Note: Negative amounts should not be used.
    * <br>
    * Note: {@code pluginName} should be used for logging/diagnostics only and MUST NOT affect
    * business logic.
@@ -810,23 +812,24 @@ public interface Economy {
    * @param amount     Amount to check.
    *
    * @return {@link EconomyResponse} which includes the Economy plugin's {@link ResponseType}
-   * whether the account can accept the deposit. On success, amount is the checked amount and
-   * balance is the current balance.
+   * indicating whether the account can receive the deposit. On success, amount is the checked
+   * amount and balance is the current balance.
    *
    * @see #fractionalDigits(String)
    */
   @NotNull
-  default EconomyResponse canAccept(@NotNull final String pluginName, @NotNull final UUID accountID, @NotNull final String worldName, @NotNull final BigDecimal amount) {
+  default EconomyResponse canDeposit(@NotNull final String pluginName, @NotNull final UUID accountID, @NotNull final String worldName, @NotNull final BigDecimal amount) {
 
-    return new EconomyResponse(BigDecimal.ZERO, BigDecimal.ZERO, ResponseType.NOT_IMPLEMENTED, "canAccept is not implemented by this economy provider.");
+    return new EconomyResponse(BigDecimal.ZERO, BigDecimal.ZERO, ResponseType.NOT_IMPLEMENTED, "canDeposit is not implemented by this economy provider.");
   }
 
   /**
-   * Checks if an account associated with a UUID can accept a deposit of the specified amount
+   * Checks if an account associated with a UUID can receive a deposit of the specified amount
    * in a given world and currency.
-   * This validates deposit feasibility, balance limits, and account status before actual deposit.
+   * Checks performed are up to the implementation, but could include balance limits, account
+   * status, inventory space for item-based currencies, or other provider-specific validations.
    * <p>
-   * Note: Negative amounts should not be used. Use has methods instead.
+   * Note: Negative amounts should not be used.
    * <br>
    * Note: {@code pluginName} should be used for logging/diagnostics only and MUST NOT affect
    * business logic.
@@ -843,15 +846,108 @@ public interface Economy {
    * @param amount     Amount to check.
    *
    * @return {@link EconomyResponse} which includes the Economy plugin's {@link ResponseType}
-   * whether the account can accept the deposit. On success, amount is the checked amount and
-   * balance is the current balance.
+   * indicating whether the account can receive the deposit. On success, amount is the checked
+   * amount and balance is the current balance.
    *
    * @see #fractionalDigits(String)
    */
   @NotNull
-  default EconomyResponse canAccept(@NotNull final String pluginName, @NotNull final UUID accountID, @NotNull final String worldName, @NotNull final String currency, @NotNull final BigDecimal amount) {
+  default EconomyResponse canDeposit(@NotNull final String pluginName, @NotNull final UUID accountID, @NotNull final String worldName, @NotNull final String currency, @NotNull final BigDecimal amount) {
 
-    return new EconomyResponse(BigDecimal.ZERO, BigDecimal.ZERO, ResponseType.NOT_IMPLEMENTED, "canAccept is not implemented by this economy provider.");
+    return new EconomyResponse(BigDecimal.ZERO, BigDecimal.ZERO, ResponseType.NOT_IMPLEMENTED, "canDeposit is not implemented by this economy provider.");
+  }
+
+  /**
+   * Checks if an account associated with a UUID can perform a withdrawal of the specified amount.
+   * Checks performed are up to the implementation, but could include account status, withdrawal
+   * limits, cooldowns, or other provider-specific validations beyond simple balance checks.
+   * <p>
+   * Note: Negative amounts should not be used.
+   * <br>
+   * Note: {@code pluginName} should be used for logging/diagnostics only and MUST NOT affect
+   * business logic.
+   * </p>
+   * @param pluginName The name of the plugin that is calling the method.
+   * @param accountID  the UUID associated with the account to check.
+   * @param amount     Amount to check.
+   *
+   * @return {@link EconomyResponse} which includes the Economy plugin's {@link ResponseType}
+   * indicating whether the account can perform the withdrawal. On success, amount is the checked
+   * amount and balance is the current balance.
+   *
+   * @see #fractionalDigits(String)
+   * @see #has(String, UUID, BigDecimal)
+   */
+  @NotNull
+  default EconomyResponse canWithdraw(@NotNull final String pluginName, @NotNull final UUID accountID, @NotNull final BigDecimal amount) {
+
+    return new EconomyResponse(BigDecimal.ZERO, BigDecimal.ZERO, ResponseType.NOT_IMPLEMENTED, "canWithdraw is not implemented by this economy provider.");
+  }
+
+  /**
+   * Checks if an account associated with a UUID can perform a withdrawal of the specified amount
+   * in a given world.
+   * Checks performed are up to the implementation, but could include account status, withdrawal
+   * limits, cooldowns, or other provider-specific validations beyond simple balance checks.
+   * <p>
+   * Note: Negative amounts should not be used.
+   * <br>
+   * Note: {@code pluginName} should be used for logging/diagnostics only and MUST NOT affect
+   * business logic.
+   * <br>
+   * If the provider does not support multiple worlds, the provider's default world will be used.
+   * </p>
+   * @param pluginName The name of the plugin that is calling the method.
+   * @param accountID  the UUID associated with the account to check.
+   * @param worldName  the name of the world to check in.
+   * @param amount     Amount to check.
+   *
+   * @return {@link EconomyResponse} which includes the Economy plugin's {@link ResponseType}
+   * indicating whether the account can perform the withdrawal. On success, amount is the checked
+   * amount and balance is the current balance.
+   *
+   * @see #fractionalDigits(String)
+   * @see #has(String, UUID, String, BigDecimal)
+   */
+  @NotNull
+  default EconomyResponse canWithdraw(@NotNull final String pluginName, @NotNull final UUID accountID, @NotNull final String worldName, @NotNull final BigDecimal amount) {
+
+    return new EconomyResponse(BigDecimal.ZERO, BigDecimal.ZERO, ResponseType.NOT_IMPLEMENTED, "canWithdraw is not implemented by this economy provider.");
+  }
+
+  /**
+   * Checks if an account associated with a UUID can perform a withdrawal of the specified amount
+   * in a given world and currency.
+   * Checks performed are up to the implementation, but could include account status, withdrawal
+   * limits, cooldowns, or other provider-specific validations beyond simple balance checks.
+   * <p>
+   * Note: Negative amounts should not be used.
+   * <br>
+   * Note: {@code pluginName} should be used for logging/diagnostics only and MUST NOT affect
+   * business logic.
+   * <br>
+   * If the provider does not support multiple worlds, the provider's default world will be used.
+   * <br>
+   * If the provider does not support multi-currency, the provider's default currency will be
+   * used.
+   * </p>
+   * @param pluginName The name of the plugin that is calling the method.
+   * @param accountID  the UUID associated with the account to check.
+   * @param worldName  the name of the world to check in.
+   * @param currency   the currency to use.
+   * @param amount     Amount to check.
+   *
+   * @return {@link EconomyResponse} which includes the Economy plugin's {@link ResponseType}
+   * indicating whether the account can perform the withdrawal. On success, amount is the checked
+   * amount and balance is the current balance.
+   *
+   * @see #fractionalDigits(String)
+   * @see #has(String, UUID, String, String, BigDecimal)
+   */
+  @NotNull
+  default EconomyResponse canWithdraw(@NotNull final String pluginName, @NotNull final UUID accountID, @NotNull final String worldName, @NotNull final String currency, @NotNull final BigDecimal amount) {
+
+    return new EconomyResponse(BigDecimal.ZERO, BigDecimal.ZERO, ResponseType.NOT_IMPLEMENTED, "canWithdraw is not implemented by this economy provider.");
   }
 
     /**
