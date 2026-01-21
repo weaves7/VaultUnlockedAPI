@@ -785,7 +785,7 @@ public interface Economy {
    * indicating whether the account can receive the deposit. On success, amount is the checked
    * amount and balance is the current balance.
    *
-   * @see #fractionalDigits(String)
+   * @since 2.19
    */
   @NotNull
   default EconomyResponse canDeposit(@NotNull final String pluginName, @NotNull final UUID accountID, @NotNull final BigDecimal amount) {
@@ -815,7 +815,7 @@ public interface Economy {
    * indicating whether the account can receive the deposit. On success, amount is the checked
    * amount and balance is the current balance.
    *
-   * @see #fractionalDigits(String)
+   * @since 2.19
    */
   @NotNull
   default EconomyResponse canDeposit(@NotNull final String pluginName, @NotNull final UUID accountID, @NotNull final String worldName, @NotNull final BigDecimal amount) {
@@ -849,7 +849,7 @@ public interface Economy {
    * indicating whether the account can receive the deposit. On success, amount is the checked
    * amount and balance is the current balance.
    *
-   * @see #fractionalDigits(String)
+   * @since 2.19
    */
   @NotNull
   default EconomyResponse canDeposit(@NotNull final String pluginName, @NotNull final UUID accountID, @NotNull final String worldName, @NotNull final String currency, @NotNull final BigDecimal amount) {
@@ -875,8 +875,7 @@ public interface Economy {
    * indicating whether the account can perform the withdrawal. On success, amount is the checked
    * amount and balance is the current balance.
    *
-   * @see #fractionalDigits(String)
-   * @see #has(String, UUID, BigDecimal)
+   * @since 2.19
    */
   @NotNull
   default EconomyResponse canWithdraw(@NotNull final String pluginName, @NotNull final UUID accountID, @NotNull final BigDecimal amount) {
@@ -906,8 +905,7 @@ public interface Economy {
    * indicating whether the account can perform the withdrawal. On success, amount is the checked
    * amount and balance is the current balance.
    *
-   * @see #fractionalDigits(String)
-   * @see #has(String, UUID, String, BigDecimal)
+   * @since 2.19
    */
   @NotNull
   default EconomyResponse canWithdraw(@NotNull final String pluginName, @NotNull final UUID accountID, @NotNull final String worldName, @NotNull final BigDecimal amount) {
@@ -941,8 +939,7 @@ public interface Economy {
    * indicating whether the account can perform the withdrawal. On success, amount is the checked
    * amount and balance is the current balance.
    *
-   * @see #fractionalDigits(String)
-   * @see #has(String, UUID, String, String, BigDecimal)
+   * @since 2.19
    */
   @NotNull
   default EconomyResponse canWithdraw(@NotNull final String pluginName, @NotNull final UUID accountID, @NotNull final String worldName, @NotNull final String currency, @NotNull final BigDecimal amount) {
